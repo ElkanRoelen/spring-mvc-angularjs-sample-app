@@ -43,7 +43,7 @@ public class UserRepository {
      * @return the total number of minutes for the user for today
      */
     public Long findTodaysMinutesForUser(String username) {
-        return (Long) em.createNamedQuery(User.COUNT_TODAYS_CALORIES).setParameter("username", username).getSingleResult();
+        return (Long) em.createNamedQuery(User.COUNT_TODAYS_MINUTES).setParameter("username", username).getSingleResult();
     }
 
     /**

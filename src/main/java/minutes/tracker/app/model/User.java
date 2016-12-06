@@ -19,14 +19,14 @@ import javax.persistence.Table;
                 query = "select u from User u where username = :username"
         ),
         @NamedQuery(
-                name = User.COUNT_TODAYS_CALORIES,
+                name = User.COUNT_TODAYS_MINUTES,
                 query = "select sum(m.minutes) from Work m where m.user.username = :username and m.date = CURRENT_DATE"
         )
 })
 public class User extends AbstractEntity {
 
     public static final String FIND_BY_USERNAME = "user.findByUserName";
-    public static final String COUNT_TODAYS_CALORIES = "user.todaysMinutes";
+    public static final String COUNT_TODAYS_MINUTES = "user.todaysMinutes";
 
     private String username;
     private String passwordDigest;
