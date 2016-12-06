@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.spring.mvc.angularjs</groupId>
-    <artifactId>calories-tracker</artifactId>
+    <artifactId>minutes-tracker</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>calories-tracker Maven Webapp</name>
+    <name>minutes-tracker Maven Webapp</name>
 
     <properties>
         <java-version>1.8</java-version>
@@ -171,7 +171,7 @@
     </dependencies>
 
     <build>
-        <finalName>calories-tracker</finalName>
+        <finalName>minutes-tracker</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

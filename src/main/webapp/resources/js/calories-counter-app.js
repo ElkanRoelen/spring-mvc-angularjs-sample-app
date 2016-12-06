@@ -1,4 +1,4 @@
-angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices', 'spring-security-csrf-token-interceptor'])
+angular.module('minutesCounterApp', ['editableTableWidgets', 'frontendServices', 'spring-security-csrf-token-interceptor'])
     .filter('excludeDeleted', function () {
         return function (input) {
             return _.filter(input, function (item) {
@@ -6,22 +6,22 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
             });
         }
     })
-    .controller('CaloriesTrackerCtrl', ['$scope' , 'MealService', 'UserService', '$timeout',
-        function ($scope, MealService, UserService, $timeout) {
+    .controller('MinutesTrackerCtrl', ['$scope' , 'WorkService', 'UserService', '$timeout',
+        function ($scope, WorkService, UserService, $timeout) {
 
             $scope.vm = {
-                maxCaloriesPerDay: 2000,
+                maxMinutesPerDay: 2000,
                 currentPage: 1,
                 totalPages: 0,
-                originalMeals: [],
-                meals: [],
+                originalWorks: [],
+                works: [],
                 isSelectionEmpty: true,
                 errorMessages: [],
                 infoMessages: []
             };
 
             updateUserInfo();
-            loadMealData(null, null, null, null, 1);
+            loadWorkData(null, null, null, null, 1);
 
 
             function showErrorMessage(errorMessage) {
@@ -33,9 +33,9 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
                 UserService.getUserInfo()
                     .then(function (userInfo) {
                         $scope.vm.userName = userInfo.userName;
-                        $scope.vm.maxCaloriesPerDay = userInfo.maxCaloriesPerDay;
-                        $scope.vm.todaysCalories = userInfo.todaysCalories ? userInfo.todaysCalories : 'None';
-                        updateCaloriesCounterStatus();
+                        $scope.vm.maxMinutesPerDay = userInfo.maxMinutesPerDay;
+                        $scope.vm.todaysMinutes = userInfo.todaysMinutes ? userInfo.todaysMinutes : 'None';
+                        updateMinutesCounterStatus();
                     },
                     function (errorMessage) {
                         showErrorMessage(errorMessage);
@@ -48,28 +48,28 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
                 }
             }
 
-            function loadMealData(fromDate, fromTime, toDate, toTime, pageNumber) {
-                MealService.searchMeals(fromDate, fromTime, toDate, toTime, pageNumber)
+            function loadWorkData(fromDate, fromTime, toDate, toTime, pageNumber) {
+                WorkService.searchWorks(fromDate, fromTime, toDate, toTime, pageNumber)
                     .then(function (data) {
 
                         $scope.vm.errorMessages = [];
                         $scope.vm.currentPage = data.currentPage;
                         $scope.vm.totalPages = data.totalPages;
 
-                        $scope.vm.originalMeals = _.map(data.meals, function (meal) {
-                            meal.datetime = meal.date + ' ' + meal.time;
-                            return meal;
+                        $scope.vm.originalWorks = _.map(data.works, function (work) {
+                            work.datetime = work.date + ' ' + work.time;
+                            return work;
                         });
 
-                        $scope.vm.meals = _.cloneDeep($scope.vm.originalMeals);
+                        $scope.vm.works = _.cloneDeep($scope.vm.originalWorks);
 
-                        _.each($scope.vm.meals, function (meal) {
-                            meal.selected = false;
+                        _.each($scope.vm.works, function (work) {
+                            work.selected = false;
                         });
 
                         markAppAsInitialized();
 
-                        if ($scope.vm.meals && $scope.vm.meals.length == 0) {
+                        if ($scope.vm.works && $scope.vm.works.length == 0) {
                             showInfoMessage("No results found.");
                         }
                     },
@@ -84,9 +84,9 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
                 $scope.vm.infoMessages = [];
             }
 
-            function updateCaloriesCounterStatus() {
-                var isCaloriesOK = $scope.vm.todaysCalories == 'None' || ($scope.vm.todaysCalories <= $scope.vm.maxCaloriesPerDay);
-                $scope.vm.caloriesStatusStyle = isCaloriesOK ? 'cal-limit-ok' : 'cal-limit-nok';
+            function updateMinutesCounterStatus() {
+                var isMinutesOK = $scope.vm.todaysMinutes == 'None' || ($scope.vm.todaysMinutes <= $scope.vm.maxMinutesPerDay);
+                $scope.vm.minutesStatusStyle = isMinutesOK ? 'cal-limit-ok' : 'cal-limit-nok';
             }
 
             function showInfoMessage(infoMessage) {
@@ -97,26 +97,26 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
                 }, 1000);
             }
 
-            $scope.updateMaxCaloriesPerDay = function () {
+            $scope.updateMaxMinutesPerDay = function () {
                 $timeout(function () {
 
-                    if ($scope.vm.maxCaloriesPerDay < 0) {
+                    if ($scope.vm.maxMinutesPerDay < 0) {
                         return;
                     }
 
-                    UserService.updateMaxCaloriesPerDay($scope.vm.maxCaloriesPerDay)
+                    UserService.updateMaxMinutesPerDay($scope.vm.maxMinutesPerDay)
                         .then(function () {
                         },
                         function (errorMessage) {
                             showErrorMessage(errorMessage);
                         });
-                    updateCaloriesCounterStatus();
+                    updateMinutesCounterStatus();
                 });
             };
 
             $scope.selectionChanged = function () {
-                $scope.vm.isSelectionEmpty = !_.any($scope.vm.meals, function (meal) {
-                    return meal.selected && !meal.deleted;
+                $scope.vm.isSelectionEmpty = !_.any($scope.vm.works, function (work) {
+                    return work.selected && !work.deleted;
                 });
             };
 
@@ -151,7 +151,7 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
                 }
 
                 if (!errorsFound) {
-                    loadMealData($scope.vm.fromDate, $scope.vm.fromTime, $scope.vm.toDate, $scope.vm.toTime, page == undefined ? 1 : page);
+                    loadWorkData($scope.vm.fromDate, $scope.vm.fromTime, $scope.vm.toDate, $scope.vm.toTime, page == undefined ? 1 : page);
                 }
 
             };
@@ -159,7 +159,7 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
             $scope.previous = function () {
                 if ($scope.vm.currentPage > 1) {
                     $scope.vm.currentPage-= 1;
-                    loadMealData($scope.vm.fromDate, $scope.vm.fromTime,
+                    loadWorkData($scope.vm.fromDate, $scope.vm.fromTime,
                         $scope.vm.toDate, $scope.vm.toTime, $scope.vm.currentPage);
                 }
             };
@@ -167,7 +167,7 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
             $scope.next = function () {
                 if ($scope.vm.currentPage < $scope.vm.totalPages) {
                     $scope.vm.currentPage += 1;
-                    loadMealData($scope.vm.fromDate, $scope.vm.fromTime,
+                    loadWorkData($scope.vm.fromDate, $scope.vm.fromTime,
                         $scope.vm.toDate, $scope.vm.toTime, $scope.vm.currentPage);
                 }
             };
@@ -175,38 +175,38 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
             $scope.goToPage = function (pageNumber) {
                 if (pageNumber > 0 && pageNumber <= $scope.vm.totalPages) {
                     $scope.vm.currentPage = pageNumber;
-                    loadMealData($scope.vm.fromDate, $scope.vm.fromTime, $scope.vm.toDate, $scope.vm.toTime, pageNumber);
+                    loadWorkData($scope.vm.fromDate, $scope.vm.fromTime, $scope.vm.toDate, $scope.vm.toTime, pageNumber);
                 }
             };
 
             $scope.add = function () {
-                $scope.vm.meals.unshift({
+                $scope.vm.works.unshift({
                     id: null,
                     datetime: null,
                     description: null,
-                    calories: null,
+                    minutes: null,
                     selected: false,
                     new: true
                 });
             };
 
             $scope.delete = function () {
-                var deletedMealIds = _.chain($scope.vm.meals)
-                    .filter(function (meal) {
-                        return meal.selected && !meal.new;
+                var deletedWorkIds = _.chain($scope.vm.works)
+                    .filter(function (work) {
+                        return work.selected && !work.new;
                     })
-                    .map(function (meal) {
-                        return meal.id;
+                    .map(function (work) {
+                        return work.id;
                     })
                     .value();
 
-                MealService.deleteMeals(deletedMealIds)
+                WorkService.deleteWorks(deletedWorkIds)
                     .then(function () {
                         clearMessages();
                         showInfoMessage("deletion successful.");
 
-                        _.remove($scope.vm.meals, function(meal) {
-                            return meal.selected;
+                        _.remove($scope.vm.works, function(work) {
+                            return work.selected;
                         });
 
                         $scope.selectionChanged();
@@ -220,34 +220,34 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
             };
 
             $scope.reset = function () {
-                $scope.vm.meals = $scope.vm.originalMeals;
+                $scope.vm.works = $scope.vm.originalWorks;
             };
 
-            function getNotNew(meals) {
-                return  _.chain(meals)
-                    .filter(function (meal) {
-                        return !meal.new;
+            function getNotNew(works) {
+                return  _.chain(works)
+                    .filter(function (work) {
+                        return !work.new;
                     })
                     .value();
             }
 
-            function prepareMealsDto(meals) {
-                return  _.chain(meals)
-                    .each(function (meal) {
-                        if (meal.datetime) {
-                            var dt = meal.datetime.split(" ");
-                            meal.date = dt[0];
-                            meal.time = dt[1];
+            function prepareWorksDto(works) {
+                return  _.chain(works)
+                    .each(function (work) {
+                        if (work.datetime) {
+                            var dt = work.datetime.split(" ");
+                            work.date = dt[0];
+                            work.time = dt[1];
                         }
                     })
-                    .map(function (meal) {
+                    .map(function (work) {
                         return {
-                            id: meal.id,
-                            date: meal.date,
-                            time: meal.time,
-                            description: meal.description,
-                            calories: meal.calories,
-                            version: meal.version
+                            id: work.id,
+                            date: work.date,
+                            time: work.time,
+                            description: work.description,
+                            minutes: work.minutes,
+                            version: work.version
                         }
                     })
                     .value();
@@ -255,36 +255,36 @@ angular.module('caloriesCounterApp', ['editableTableWidgets', 'frontendServices'
 
             $scope.save = function () {
 
-                var maybeDirty = prepareMealsDto(getNotNew($scope.vm.meals));
+                var maybeDirty = prepareWorksDto(getNotNew($scope.vm.works));
 
-                var original = prepareMealsDto(getNotNew($scope.vm.originalMeals));
+                var original = prepareWorksDto(getNotNew($scope.vm.originalWorks));
 
-                var dirty = _.filter(maybeDirty).filter(function (meal) {
+                var dirty = _.filter(maybeDirty).filter(function (work) {
 
-                    var originalMeal = _.filter(original, function (orig) {
-                        return orig.id === meal.id;
+                    var originalWork = _.filter(original, function (orig) {
+                        return orig.id === work.id;
                     });
 
-                    if (originalMeal.length == 1) {
-                        originalMeal = originalMeal[0];
+                    if (originalWork.length == 1) {
+                        originalWork = originalWork[0];
                     }
 
-                    return originalMeal && ( originalMeal.date != meal.date ||
-                        originalMeal.time != meal.time || originalMeal.description != meal.description ||
-                        originalMeal.calories != meal.calories)
+                    return originalWork && ( originalWork.date != work.date ||
+                        originalWork.time != work.time || originalWork.description != work.description ||
+                        originalWork.minutes != work.minutes)
                 });
 
-                var newItems = _.filter($scope.vm.meals, function (meal) {
-                    return meal.new;
+                var newItems = _.filter($scope.vm.works, function (work) {
+                    return work.new;
                 });
 
-                var saveAll = prepareMealsDto(newItems);
+                var saveAll = prepareWorksDto(newItems);
                 saveAll = saveAll.concat(dirty);
 
                 $scope.vm.errorMessages = [];
 
                 // save all new items plus the ones that where modified
-                MealService.saveMeals(saveAll).then(function () {
+                WorkService.saveWorks(saveAll).then(function () {
                         $scope.search($scope.vm.currentPage);
                         showInfoMessage("Changes saved successfully");
                         updateUserInfo();

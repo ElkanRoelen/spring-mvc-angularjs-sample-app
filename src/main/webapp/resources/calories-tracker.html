@@ -3,14 +3,14 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Calories Tracker</title>
+    <title>Minutes Tracker</title>
     <link rel="stylesheet" href="/resources/bower_components/pure/pure.css">
     <link rel="stylesheet" href="/resources/bower_components/pure/grids-responsive.css">
     <link rel="stylesheet" href="/resources/public/css/pure-theme.css">
-    <link rel="stylesheet" href="/resources/public/css/calories-tracker.css">
+    <link rel="stylesheet" href="/resources/public/css/minutes-tracker.css">
     <link rel="stylesheet" href="/resources/css/jquery.datetimepicker.css">
 </head>
-<body class="pure-skin-theme" id="caloriesCounterApp" ng-controller="CaloriesTrackerCtrl">
+<body class="pure-skin-theme" id="minutesCounterApp" ng-controller="MinutesTrackerCtrl">
 
 <div class="please-wait-dialog" ng-hide="vm.appReady">
     <img class="please-wait-spinner" src="/resources/img/loading.gif">
@@ -22,22 +22,22 @@
         <a class="pure-menu-heading" href="#">
             <img class="logo" src="/resources/img/logo.png">
         </a>
-        <span class="header-element page-title">Calories Tracker</span>
+        <span class="header-element page-title">Minutes Tracker</span>
 
-        <div class="today-calories-container">
-            <div class="today-calories {{vm.caloriesStatusStyle}}">
-                Today' calories:
-                <div class="today-calories-placeholder" ng-hide="vm.todaysCalories"></div>
-                <span ng-cloak>{{vm.todaysCalories}}</span>
+        <div class="today-minutes-container">
+            <div class="today-minutes {{vm.minutesStatusStyle}}">
+                Today' minutes:
+                <div class="today-minutes-placeholder" ng-hide="vm.todaysMinutes"></div>
+                <span ng-cloak>{{vm.todaysMinutes}}</span>
             </div>
         </div>
 
     </div>
     <div class="pure-u-lg-1-2 pure-u-1 utilities">
         <div class="header-element">
-            Max. calories
-            <input tabindex="10" class="max-cal" type="number" ng-model="vm.maxCaloriesPerDay"
-                   ng-model-options="{'updateOn':'blur'}" ng-blur="updateMaxCaloriesPerDay()">
+            Max. minutes
+            <input tabindex="10" class="max-cal" type="number" ng-model="vm.maxMinutesPerDay"
+                   ng-model-options="{'updateOn':'blur'}" ng-blur="updateMaxMinutesPerDay()">
         </div>
         <div class="header-element username">
             <div class="username-placeholder" ng-hide="vm.userName"></div>
@@ -97,7 +97,7 @@
 
         </fieldset>
 
-        <div class="meals-list">
+        <div class="works-list">
 
             <div class="table-buttons">
                 <button type="submit" class="pure-button" ng-click="add()">Add</button>
@@ -112,30 +112,30 @@
                     <th class="selection-column"></th>
                     <th>Date/Time</th>
                     <th>Description</th>
-                    <th>Total Calories</th>
+                    <th>Total Minutes</th>
                 </tr>
                 </thead>
 
                 <tbody>
 
-                <tr ng-repeat="meal in vm.meals | excludeDeleted | limitTo : 10" tt-editable-row rowValue="meal"
+                <tr ng-repeat="work in vm.works | excludeDeleted | limitTo : 10" tt-editable-row rowValue="work"
                     ng-class="{'pure-table-odd': $index % 2 == 1, 'pure-table-even': $index % 2 == 0}">
 
                     <td class="selection-column">
-                        <input type="checkbox" ng-model="meal.selected" ng-click="selectionChanged()">
+                        <input type="checkbox" ng-model="work.selected" ng-click="selectionChanged()">
                     </td>
 
-                    <td tt-editable-cell value="meal.datetime" is-new="meal.new">
+                    <td tt-editable-cell value="work.datetime" is-new="work.new">
                         <input tt-date-time-picker tt-cell-field type="text"
-                               ng-model="meal.datetime">
+                               ng-model="work.datetime">
                     </td>
 
-                    <td tt-editable-cell value="meal.description" is-new="meal.new">
-                        <input type="text" tt-cell-field ng-model="meal.description">
+                    <td tt-editable-cell value="work.description" is-new="work.new">
+                        <input type="text" tt-cell-field ng-model="work.description">
                     </td>
 
-                    <td tt-editable-cell value="meal.calories" is-new="meal.new">
-                        <input type="text" tt-cell-field tt-numeric-field ng-model="meal.calories">
+                    <td tt-editable-cell value="work.minutes" is-new="work.new">
+                        <input type="text" tt-cell-field tt-numeric-field ng-model="work.minutes">
                     </td>
 
                 </tr>
@@ -173,7 +173,7 @@
 
 </main>
 
-<script type="text/javascript" data-main="/resources/js/run-calories-tracker"
+<script type="text/javascript" data-main="/resources/js/run-minutes-tracker"
         src="/resources/bower_components/requirejs/require.js"></script>
 
 </body>

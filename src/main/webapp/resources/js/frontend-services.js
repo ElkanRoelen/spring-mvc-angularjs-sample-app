@@ -1,16 +1,16 @@
 
 
 angular.module('frontendServices', [])
-    .service('MealService', ['$http', '$q', function($http, $q) {
+    .service('WorkService', ['$http', '$q', function($http, $q) {
         return {
-            searchMeals: function(fromDate, fromTime, toDate, toTime, pageNumber) {
+            searchWorks: function(fromDate, fromTime, toDate, toTime, pageNumber) {
                 var deferred = $q.defer();
 
                 function prepareTime(time) {
                     return time ? '1970/01/01 ' + time : null;
                 }
 
-                $http.get('/meal/',{
+                $http.get('/work/',{
                     params: {
                         fromDate: fromDate,
                         toDate: toDate,
@@ -24,20 +24,20 @@ angular.module('frontendServices', [])
                         deferred.resolve(response.data);
                     }
                     else {
-                        deferred.reject('Error retrieving list of meals');
+                        deferred.reject('Error retrieving list of works');
                     }
                 });
 
                 return deferred.promise;
             },
 
-            deleteMeals: function(deletedMealIds) {
+            deleteWorks: function(deletedWorkIds) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'DELETE',
-                    url: '/meal',
-                    data: deletedMealIds,
+                    url: '/work',
+                    data: deletedWorkIds,
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -47,20 +47,20 @@ angular.module('frontendServices', [])
                         deferred.resolve();
                     }
                     else {
-                        deferred.reject('Error deleting meals');
+                        deferred.reject('Error deleting works');
                     }
                 });
 
                 return deferred.promise;
             },
 
-            saveMeals: function(dirtyMeals) {
+            saveWorks: function(dirtyWorks) {
                 var deferred = $q.defer();
 
                 $http({
                     method: 'POST',
-                    url: '/meal',
-                    data: dirtyMeals,
+                    url: '/work',
+                    data: dirtyWorks,
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "text/plain, application/json"
@@ -71,7 +71,7 @@ angular.module('frontendServices', [])
                         deferred.resolve();
                     }
                     else {
-                    deferred.reject("Error saving meals: " + response.data);
+                    deferred.reject("Error saving works: " + response.data);
                     }
                 });
 
@@ -96,16 +96,16 @@ angular.module('frontendServices', [])
 
                 return deferred.promise;
             },
-            updateMaxCaloriesPerDay: function(maxCaloriesPerDay) {
+            updateMaxMinutesPerDay: function(maxMinutesPerDay) {
                 var deferred = $q.defer();
 
-                $http.put('/user', maxCaloriesPerDay)
+                $http.put('/user', maxMinutesPerDay)
                     .then(function (response) {
                         if (response.status == 200) {
                             deferred.resolve();
                         }
                         else {
-                            deferred.reject('Error saving max calories per day');
+                            deferred.reject('Error saving max minutes per day');
                         }
                     });
 

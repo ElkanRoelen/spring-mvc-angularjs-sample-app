@@ -42,7 +42,7 @@ angular.module('common', ['ngMessages'])
             })
             .then(function(response) {
                 if (response.data == 'ok') {
-                    window.location.replace('/resources/calories-tracker.html');
+                    window.location.replace('/resources/minutes-tracker.html');
                 }
                 else {
                     $scope.vm.errorMessages = [];

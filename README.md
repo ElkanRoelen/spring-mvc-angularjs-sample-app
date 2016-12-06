@@ -27,7 +27,7 @@ The spring test profile will activate an in-memory database. After the server st
 
     http://localhost:8080/
 
-To see a user with existing data (16 meals, 8 days from 1st of January 2015 to the 8th), login with the following credentials:
+To see a user with existing data (16 works, 8 days from 1st of January 2015 to the 8th), login with the following credentials:
 
     username: test123 / password: Password2
 
@@ -71,19 +71,19 @@ Url           |Verb          | Description
 
 Url           |Verb          | Description
 --------------|------------- | -------------
-/user         |GET          | retrieves info for the currently logged-in user (number of calories of today, etc.) 
-/user| PUT| Used to save the user max calories per day
+/user         |GET          | retrieves info for the currently logged-in user (number of minutes of today, etc.) 
+/user| PUT| Used to save the user max minutes per day
 /user|POST| creates a new user
 
 
 
-##### Meal Service #####
+##### Work Service #####
 
 Url           |Verb          | Description
 --------------|------------- | -------------
-/meal         |GET          | searches meals for the current user by date/time
-/meal|POST|saves a modified set of meals, might included new ones
-/meal|DELETE| deletes a set of meals
+/work         |GET          | searches works for the current user by date/time
+/work|POST|saves a modified set of works, might included new ones
+/work|DELETE| deletes a set of works
 
 
 
@@ -92,7 +92,7 @@ Url           |Verb          | Description
 
 This snapshot shows the test code coverage for the app package:
 
-![alt Calories Tracker test Code Coverage](http://d2huq83j2o5dyd.cloudfront.net/CodeCoverage.png)
+![alt Minutes Tracker test Code Coverage](http://d2huq83j2o5dyd.cloudfront.net/CodeCoverage.png)
 
 ## Installation instructions
 

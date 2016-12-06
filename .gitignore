@@ -1,5 +1,8 @@
 node_modules
 .tmp
+.classpath
+.project
+.settings
 .sass-cache
 .idea
 *.iml

@@ -10,7 +10,7 @@
         </layout>
     </appender>
 
-    <logger name="calories.tracker.app">
+    <logger name="minutes.tracker.app">
         <level value="info"/>
     </logger>
 

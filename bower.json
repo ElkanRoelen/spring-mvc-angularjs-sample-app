@@ -1,10 +1,11 @@
 {
-    "name": "spring-mvc-angularjs-calories-tracker",
+    "name": "spring-mvc-angularjs-minutes-tracker",
     "version": "1.0",
     "authors": [
+    	"elkan@bug-hunter.nl",
         "jhades.dev@gmail.com"
     ],
-    "description": "Sample Spring MVC | AngularJs project - Calories tracker",
+    "description": "Sample Spring MVC | AngularJs project - Minutes tracker",
     "dependencies": {
         "angular": "1.3.8",
         "angular-messages": "1.3.8",
